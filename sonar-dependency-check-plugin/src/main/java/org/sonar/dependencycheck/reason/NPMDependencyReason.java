@@ -101,6 +101,9 @@ public class NPMDependencyReason extends DependencyReason {
     private void fillArtifactMatch(@NonNull Dependency dependency, Identifier npmIdentifier) {
         Optional<String> packageArtifact = Identifier.getPackageArtifact(npmIdentifier);
         if (packageArtifact.isPresent()) {
+            if (!packageArtifact.get().contains("@")) {
+                LOGGER.warn(packageArtifact + " doesn't have a \"@\". Checkout dependency " + dependency.getFileName());
+            }
             // packageArtifact has something like jquery@2.2.0
             String[] npmIdentifierSplit = packageArtifact.get().split("@");
             String name = npmIdentifierSplit[0];
